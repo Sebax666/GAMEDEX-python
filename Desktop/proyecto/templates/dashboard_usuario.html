@@ -1,0 +1,361 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Tienda</title>
+
+<style>
+
+/*===============================*/
+/* GENERAL */
+/*===============================*/
+
+body{
+    margin:0;
+    font-family: Arial;
+    display:flex;
+    background-image:url("{% static 'imagenes/fondo-admin.avif' %}");
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+/*===============================*/
+/* SIDEBAR */
+/*===============================*/
+
+.sidebar{
+
+    width: 220px;
+    background: #202459;
+    color: white;
+    height: 100vh;
+    padding:20px;
+    
+}
+
+.sidebar h2{
+    margin-bottom:40px;
+}
+
+.sidebar a{
+
+    display:block;
+    color:white;
+    text-decoration:none;
+    margin:15px 0;
+}
+
+.sidebar a:hover{
+    color: #00d4ff;
+}
+
+/*===============================*/
+/* CONTADOR CARRITO */
+/*===============================*/
+
+.badge{
+
+    background:red;
+    padding:3px 8px;
+    border-radius:50%;
+    font-size:12px;
+    margin-left:5px;
+}
+
+/*===============================*/
+/* CONTENIDO PRINCIPAL */
+/*===============================*/
+
+
+.main{
+
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/*===============================*/
+/* BARRA SUPERIOR */
+/*===============================*/
+
+
+.topbar{
+
+    background:rgba(0,0,0,0.7);
+    color:white;
+    padding:15px 30px;
+    border-radius:0 0 12px 12px;
+    display:flex;
+}
+
+/*===============================*/
+/* CONTENIDO */
+/*===============================*/
+
+
+.contenido{
+    align-self:center;
+    color: #ffffff;
+    height:10%;
+}
+
+
+/*===============================*/
+/* GRID PRODUCTOS */
+/*===============================*/
+
+.grid{
+
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    gap:25px;
+}
+
+/*===============================*/
+/* TARJETA PRODUCTO */
+/*===============================*/
+
+.card{
+
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+    margin:20px;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+/*===============================*/
+/* IMAGEN */
+/*===============================*/
+
+.card img{
+
+    width:100%;
+    height:200px;
+    object-fit:cover;
+}
+
+/*===============================*/
+/* CUERPO TARJETA */
+/*===============================*/
+
+.card-body{
+
+    padding:15px;
+}
+
+.card-body h3{
+
+    margin:10px 0;
+    color: #333333;
+}
+
+.card-body p{
+
+    color: #000000;
+    font-size:14px;
+}
+
+/*===============================*/
+/* BOTON */
+/*===============================*/
+
+.btn{
+
+    display:block;
+    margin-top:10px;
+    background: #007bff;
+    color:white;
+    text-align:center;
+    padding:10px;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+.btn:hover{
+    background: #0056b3;
+}
+
+/*===============================*/
+/* contenedor de notificaciones */
+/*===============================
+
+.contenedor-mensajes{
+
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+/* mensaje */
+
+.mensaje-alerta{
+
+    background: #2b2779;
+    color: white;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    min-width: 250px;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    animation: slideIn 0.5s ease;
+
+}
+
+/* animacion entrada */
+
+@keyframes slideIn{
+
+    from{
+        transform: translateX(300px);
+        opacity:0;
+    }
+
+    to{
+        transform: translateX(0);
+        opacity:1;
+    }
+
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<!-- MENU LATERAL -->
+
+<div class="sidebar">
+
+<h2>GAMEDEX</h2>
+
+<a href="{% url 'ver_carrito' %}">
+Ver carrito
+<span class="badge">{{ total_carrito }}</span>
+</a>
+
+<a href="#">Editar perfil</a>
+
+<a href="#">Comunidades</a>
+
+<a href="/logout/">Cerrar sesión</a>
+
+</div>
+
+
+<!-- CONTENIDO PRINCIPAL -->
+
+<div class="main">
+
+<!-- BARRA SUPERIOR -->
+
+<div class="topbar">
+
+<h3>Bienvenido, {{ request.user.username }}</h3>
+
+</div>
+
+<!-- MENSAJE DE ERROR  -->
+
+<div class="contenedor-mensajes">
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="mensaje-alerta">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+</div>
+
+<!-- PRODUCTOS -->
+
+<div class="contenido">
+
+<h1 style="margin-bottom:30px;">Productos disponibles</h1>
+</div class="contenido">
+
+
+<div class="grid">
+
+{% for producto in productos %}
+
+<div class="card">
+
+{% if producto.imagen %}
+<img src="{{ producto.imagen.url }}">
+{% endif %}
+
+<div class="card-body">
+
+<h3>{{ producto.nombre }}</h3>
+
+<p>{{ producto.descripcion }}</p>
+
+<p><strong>Precio: ${{ producto.precio }}</strong></p>
+
+<p>Cantidad disponible: {{ producto.cantidad }}</p>
+
+
+<form action="{% url 'agregar_carrito' producto.id %}" method="POST">
+
+{% csrf_token %}
+
+<input type="number" name="cantidad" value="1" min="1" style="width:60px; padding:5px;">
+
+<button type="submit" class="btn">
+Añadir al carrito
+</button>
+
+</form>
+
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+<script>
+
+setTimeout(function(){
+
+    let mensajes = document.querySelectorAll(".mensaje-alerta");
+
+    mensajes.forEach(function(mensaje){
+
+        mensaje.style.transition = "opacity 1s";
+        mensaje.style.opacity = "0";
+
+        setTimeout(function(){
+            mensaje.remove();
+        },1000);
+
+    });
+
+},5000);
+
+</script>
+
+</body>
+
+</html>

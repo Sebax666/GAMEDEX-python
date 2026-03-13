@@ -1,0 +1,249 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Carrito</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial;
+    display:flex;
+    background-image:url("{% static 'imagenes/fondo-admin.avif' %}");
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:220px;
+    background:#202459c2;
+    color:white;
+    height:100vh;
+    padding:20px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    margin:15px 0;
+}
+
+/* CONTENIDO PRINCIPAL */
+
+.main{
+    flex:1;
+    padding:20px;
+}
+
+/* TITULO */
+
+.contenido{
+    color:white;
+    text-align:center;
+    background:rgba(0,0,0,0.72);
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+/* TABLA */
+
+.tabla{
+    width:100%;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.tabla th, .tabla td{
+    padding:15px;
+    text-align:center;
+}
+
+.tabla th{
+    background:#202459;
+    color:white;
+}
+
+/* BOTONES */
+
+.btn{
+    padding:6px 10px;
+    border-radius:6px;
+    text-decoration:none;
+    color:white;
+}
+
+.btn-quitar{
+    background:orange;
+}
+
+.btn-eliminar{
+    background:red;
+}
+
+/* TOTAL */
+
+.total{
+    margin-top:15px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* SECCION COMPRAR */
+
+.comprar{
+    margin-top:30px;
+    text-align:center;
+    color:white;
+}
+
+/* BOTON COMPRAR */
+
+.btn-comprar{
+    display:inline-block;
+    margin-top:15px;
+    padding:12px 30px;
+    background:#28a745;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:18px;
+}
+
+.btn-comprar:hover{
+    background: #218838;
+    box-shadow: 0 0 150px #7b1515;
+    transform:translateY(-5px);
+}
+
+/* MENSAJES */
+
+.message{
+    margin-top:15px;
+    padding:10px;
+    border-radius:6px;
+    text-align:center;
+    color:white;
+}
+
+.message.success{
+    background:#28a745;
+}
+
+.message.error{
+    background:#dc3545;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>GAMEDEX</h2>
+
+<a href="{% url 'dashboard_usuario' %}">
+Volver a la tienda
+</a>
+
+<a href="/logout/">
+Cerrar sesión
+</a>
+
+</div>
+
+
+<!-- CONTENIDO -->
+
+<div class="main">
+
+<div class="contenido">
+<h1>Tu carrito</h1>
+</div>
+
+<table class="tabla">
+
+<tr>
+<th>Producto</th>
+<th>Precio</th>
+<th>Cantidad</th>
+<th>Subtotal</th>
+<th>Acciones</th>
+</tr>
+
+{% for item in productos_carrito %}
+
+<tr>
+
+<td>{{ item.producto.nombre }}</td>
+
+<td>${{ item.producto.precio }}</td>
+
+<td>{{ item.cantidad }}</td>
+
+<td>${{ item.subtotal }}</td>
+
+<td>
+
+<a href="{% url 'quitar_unidad' item.producto.id %}" class="btn btn-quitar">
+Quitar 1
+</a>
+
+<a href="{% url 'eliminar_producto' item.producto.id %}" class="btn btn-eliminar">
+Eliminar
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+
+<!-- SECCION COMPRAR -->
+
+<div class="comprar">
+
+<p style="font-size:22px;">¿Deseas finalizar tu compra?</p>
+
+<div class="total">
+Total: ${{ total }}
+</div>
+
+<a href="{% url 'factura' %}" class="btn-comprar">
+Comprar
+</a>
+
+
+</div>
+
+
+<!-- MENSAJES DJANGO -->
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+</div>
+
+</body>
+
+</html>

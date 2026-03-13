@@ -1,0 +1,110 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block title %}Panel Administrador{% endblock %}
+
+{% block content %}
+
+<!-- ESTADÍSTICAS -->
+<div class="estadisticas">
+
+    <div class="card">
+        <h4>Usuarios</h4>
+        <p>{{ total_usuarios }}</p>
+    </div>
+
+    <div class="card">
+        <h4>Vendedores</h4>
+        <p>{{ total_vendedores }}</p>
+    </div>
+
+    <div class="card">
+        <h4>Administradores</h4>
+        <p>{{ total_admins }}</p>
+    </div>
+
+</div>
+
+
+<!-- TARJETA PRINCIPAL -->
+<div class="tarjeta">
+
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+
+    <h2>Gestión de Usuarios</h2>
+
+    <a href="{% url 'crear_usuario' %}" class="btn-agregar">
+        + Agregar Usuario
+    </a>
+
+</div>
+
+    <!-- BUSCADOR -->
+    <form method="GET" class="buscador">
+        <input 
+            type="text" 
+            name="q" 
+            placeholder="Buscar por usuario o email..." 
+            value="{{ query|default:'' }}"
+        >
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- TABLA -->
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>
+                    {% for grupo in usuario.groups.all %}
+                        {{ grupo.name }}
+                    {% empty %}
+                        Sin rol
+                    {% endfor %}
+                </td>
+                <td>
+                    <a class="btn-editar" href="{% url 'editar_usuario' usuario.id %}">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No se encontraron usuarios.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- PAGINACIÓN -->
+    <div class="paginacion">
+
+        {% if usuarios.has_previous %}
+            <a href="?page=1&q={{ query }}">« Primera</a>
+            <a href="?page={{ usuarios.previous_page_number }}&q={{ query }}">‹ Anterior</a>
+        {% endif %}
+
+        <span>
+            Página {{ usuarios.number }} de {{ usuarios.paginator.num_pages }}
+        </span>
+
+        {% if usuarios.has_next %}
+            <a href="?page={{ usuarios.next_page_number }}&q={{ query }}">Siguiente ›</a>
+            <a href="?page={{ usuarios.paginator.num_pages }}&q={{ query }}">Última »</a>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

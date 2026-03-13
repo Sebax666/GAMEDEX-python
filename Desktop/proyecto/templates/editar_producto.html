@@ -1,0 +1,143 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Editar Producto</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial;
+    background-image: url("{% static 'imagenes/fondo.avif' %}");
+    background-size: cover;
+}
+
+/* Barra superior */
+
+.navbar{
+    background-color: #122A54;
+    color:white;
+    padding:35px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-radius: 10px;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+/* Contenedor */
+
+.container{
+    width:600px;
+    margin:60px auto;
+    background: #122A54;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:10px 5px 20px rgba(0,0,0,0.3);
+}
+
+/* Inputs */
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+/* Botones */
+
+.btn-guardar{
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn-cancelar{
+    background:#dc3545;
+    color:white;
+    padding:12px 20px;
+    text-decoration:none;
+    border-radius:5px;
+    margin-left:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Barra superior -->
+
+<div class="navbar">
+
+    <div>
+        Panel del vendedor
+    </div>
+
+    <div>
+        Bienvenido {{ request.user.username }}
+
+        <a href="{% url 'dashboard_vendedor' %}">Inventario</a>
+
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    </div>
+
+</div>
+
+<!-- Formulario -->
+
+<div class="container">
+
+<h2>Editar Producto</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<label>Nombre</label>
+<input type="text" name="nombre" value="{{ producto.nombre }}">
+
+<label>Descripción</label>
+<textarea name="descripcion">{{ producto.descripcion }}</textarea>
+
+<label>Precio</label>
+<input type="number" name="precio" value="{{ producto.precio }}">
+
+<label>Cantidad</label>
+<input type="number" name="cantidad" value="{{ producto.cantidad }}">
+
+<label>Días de garantía</label>
+<input type="number" name="dias_garantia" value="{{ producto.dias_garantia }}">
+
+<label>Imagen</label>
+<input type="file" name="imagen">
+
+<br><br>
+
+<button class="btn-guardar">Guardar Cambios</button>
+
+<a href="{% url 'dashboard_vendedor' %}" class="btn-cancelar">
+Cancelar
+</a>
+
+</form>
+
+</div>
+
+</body>
+</html>

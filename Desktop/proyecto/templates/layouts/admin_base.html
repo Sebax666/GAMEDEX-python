@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Panel Admin{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+   {% block sidebar %}
+<aside class="sidebar">
+    <h2>GAMEDEX</h2>
+
+    <a href="{% url 'dashboard_admin' %}">👥 Usuarios</a>
+    <a href="#">🌎 Comunidades</a>
+    <a href="{% url 'inventario_admin' %}">📦 Inventario</a>
+    <a href="{% url 'logout' %}">🚪 Cerrar Sesión</a>
+</aside>
+{% endblock %}
+
+
+    <!-- CONTENIDO -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <h3>Bienvenido, {{ request.user.username }}</h3>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

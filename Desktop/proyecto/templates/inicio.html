@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INICIO</title>
+</head>
+<body style="background-image: url('{% static "imagenes/fondo.avif" %}'); background-size: cover; background-repeat: no-repeat;">
+
+
+    <nav style="background-color: #122A54; display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 10px; margin: 20px;">
+
+    <!-- Logo a la izquierda -->
+    <div>
+        <img src="{% static 'imagenes/logo.png' %}" 
+             alt="Logo GAMEDEX" 
+             style="width: 100px; height: 100px;">
+    </div>
+
+    <!-- Links a la derecha -->
+     <div style ="display: flex; gap: 50px;">
+       <div style="text-align:center; color:white; text-align: center; font-size: 50px;">Bienvenido a GAMEDEX</div>
+     </div>
+    <div style="display: flex; gap: 50px;">
+        <a href="/inicio" style="color: white; text-decoration: none; font-size: 25px;">Inicio</a>
+        <a href="/compras" style="color: white; text-decoration: none; font-size: 25px;">Compras</a>
+        <a href="/carrito" style="color: white; text-decoration: none; font-size: 25px;">Carrito</a>
+    </div>
+
+</nav>
+
+    
+    <p>
+        <font color="white">GAMEDEX es una plataforma dedicada a los videojuegos, donde podrás encontrar 
+        información sobre tus juegos favoritos, descubrir nuevos títulos y compartir 
+        tus experiencias con otros gamers. Nuestra misión es crear una comunidad apasionada
+         por los videojuegos, ofreciendo un espacio para discutir, reseñar y explorar el
+          mundo de los juegos. ¡Únete a nosotros y sumérgete en la diversión de GAMEDEX!
+          </font>
+    </p>
+    
+</body>
+<footer style="background-color:#122A54; padding: 10px; position: fixed; bottom: 0; width: 100%;">
+    <p style="color: white; text-align: center;">&copy; 2026 GAMEDEX. Todos los derechos reservados.</p>
+</footer>
+</html>

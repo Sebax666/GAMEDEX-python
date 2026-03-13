@@ -1,0 +1,37 @@
+{% extends "layouts/auth_base.html" %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+
+<div class="auth-box">
+
+    <h2>Crear Cuenta</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Nombre de usuario" required>
+
+        <input type="email" name="email" placeholder="Correo electrónico">
+
+        <input type="password" name="password" placeholder="Contraseña" required>
+
+        <select name="rol" required>
+            <option value="">Selecciona tipo de cuenta</option>
+            <option value="Usuario">Usuario</option>
+            <option value="Vendedor">Vendedor</option>
+        </select>
+
+        <button type="submit">Registrarse</button>
+
+        <div class="auth-link">
+            <a href="{% url 'login' %}">Volver al Login</a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+

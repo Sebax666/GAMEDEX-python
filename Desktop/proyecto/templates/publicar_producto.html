@@ -1,0 +1,13 @@
+@login_required
+def toggle_publicacion(request, producto_id):
+
+    producto = get_object_or_404(
+        Producto,
+        id=producto_id,
+        vendedor=request.user
+    )
+
+    producto.publicado = not producto.publicado
+    producto.save()
+
+    return redirect("dashboard_vendedor")

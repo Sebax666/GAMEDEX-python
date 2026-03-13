@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Panel Vendedor</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Inter, Arial, sans-serif;
+    bgackground: #0b2f64;
+}
+
+/* NAVBAR */
+
+.navbar{
+    background-color:#122A54;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar h2{
+    color: #ff9900;
+}
+
+.navbar a{
+    color:red;
+    text-decoration:none;
+}
+
+/* DASHBOARD */
+
+.container{
+    padding:40px;
+}
+
+/* CARDS */
+
+.dashboard-cards{
+    display:flex;
+    gap:20px;
+    margin-bottom:40px;
+}
+
+.card{
+    flex:1;
+    background: #122A54;
+    color:white;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    transition:all 0.3s ease;
+    cursor:pointer;
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+.card h1{
+    font-size:40px;
+    color:#ff9900;
+}
+
+.card:hover{
+    background-color: #00c3ff;
+    color: black;
+    box-shadow: 0 0 15px #00c3ff;
+    transform:translateY(-8px);
+}
+
+/* BOTON */
+
+.btn-crear{
+    background-color: #ff9900;
+    color:white;
+    padding:12px 25px;
+    text-decoration:none;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+/* TABLA */
+
+.tabla-container{
+    background: #2555a7;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    overflow:hidden;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background: #122A54;
+    text-align:left;
+    padding:15px;
+}
+
+td{
+    padding:15px;
+}
+
+tr{
+    border-top:1px solid #eee;
+}
+
+</style>
+
+</head>
+
+
+<body style="
+background: url('{% static "imagenes/fondo-admin.avif" %}') no-repeat center center fixed;
+background-size: cover;
+">
+
+<!-- 🔷 NAVBAR -->
+<div class="navbar">
+
+    <h2>VENDEDORES GAMEDEX</h2>
+
+    <div>
+        <h3>Bienvenido <strong>{{ request.user.username }}</strong></h3>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    </div>
+
+</div>
+
+
+<div class="container">
+
+<!-- 🔶 CARDS DE ESTADÍSTICAS -->
+
+<div class="dashboard-cards">
+
+    <div class="card">
+        <h3>Total Productos</h3>
+        <h1>{{ total_productos }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Publicados</h3>
+        <h1>{{ total_publicados }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Borradores</h3>
+        <h1>{{ total_borradores }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Productos Activos</h3>
+        <h1>{{ productos_activos }}</h1>
+    </div>
+
+</div>
+
+
+<!-- 🔶 BOTÓN CREAR PRODUCTO -->
+
+<div style="margin-bottom:20px;">
+    <a href="{% url 'crear_producto' %}" class="btn-crear">
+        + Crear Nuevo Producto
+    </a>
+</div>
+
+
+<!-- 🔶 TABLA PRODUCTOS -->
+
+<div class="tabla-container">
+
+<table>
+
+<tr>
+    <th>Producto</th>
+    <th>Precio</th>
+    <th>Stock</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+</tr>
+
+{% for producto in productos %}
+
+<tr>
+
+<td>{{ producto.nombre }}</td>
+
+<td>${{ producto.precio }}</td>
+
+<td>{{ producto.cantidad }}</td>
+
+<td>
+
+{% if producto.publicado %}
+<span style="color:green; font-weight:bold;">Publicado</span>
+{% else %}
+<span style="color:gray;">Borrador</span>
+{% endif %}
+
+</td>
+
+<td>
+
+<a href="{% url 'editar_producto' producto.id %}" style="color: #ff9900; text-decoration: underline;">Editar</a> |
+
+<a href="{% url 'toggle_publicacion' producto.id %}" style="color: #ff9900; text-decoration: underline;">
+Cambiar estado
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

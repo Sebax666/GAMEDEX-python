@@ -1,0 +1,59 @@
+{% extends "layouts/admin_base.html" %}
+
+{% block sidebar %}{% endblock %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block content %}
+
+<div class="tarjeta" style="max-width:600px; margin:auto;">
+
+    <h2>Editar Usuario</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Nombre de usuario</label>
+        <input type="text" name="username" 
+               value="{{ usuario.username }}" required>
+
+        <label>Email</label>
+        <input type="email" name="email" 
+               value="{{ usuario.email }}">
+
+        <label>Nueva contraseña (opcional)</label>
+        <input type="password" name="password"
+               placeholder="Dejar vacío para mantener la actual">
+
+        <label>Rol</label>
+        <select name="rol" required>
+            {% for grupo in grupos %}
+                <option value="{{ grupo.name }}"
+                {% if grupo in usuario.groups.all %}
+                    selected
+                {% endif %}
+                >
+                    {{ grupo.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br>
+
+        <div style="display:flex; gap:15px; margin-top:20px;">
+            <button type="submit" class="btn-agregar">
+                Guardar Cambios
+            </button>
+
+            <a href="{% url 'dashboard_admin' %}" 
+               class="btn-cancelar">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+

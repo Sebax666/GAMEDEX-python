@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - GAMEDEX</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-image: url("{% static 'imagenes/fondo.avif' %}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-box {
+            background-color: #122A54;
+            padding: 40px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 180px 300px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1e90ff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background-color: #187bcd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+    <img src="{% static 'imagenes/logo.png' %} " alt="Logo GAMEDEX" style="width: 100px; height: 100px; margin-bottom: 20px;">  
+        <h2>Iniciar Sesión</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Entrar</button>
+             <div style="margin-top:15px; text-align:center;">
+    <p>¿No tienes cuenta?</p>
+    <a href="{% url 'registro_publico' %}" class="btn-agregar">
+        Registrarse
+    </a>
+</div>
+        </form>
+    </div>
+   
+
+
+</body>
+</html>
